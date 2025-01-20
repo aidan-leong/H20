@@ -1,0 +1,24 @@
+   current mechanics - general
+- pressure plate that rotates a totem
+- pressure plate that moves down a movable barrier
+- game clearing logic which pans camera and lock the last totem to activate last totem within level to show the door opening
+
+
+   current mechanics - totem  
+- evil totem which kills player when hit
+- mirror that reflects a totem's beam
+- beam activation and deactivation based on if it is hit by another totem
+
+
+
+   changes to be made - general
+- remove pressure plate that rotates, player will be able to press e and q to rotate totems instead (DONE)
+
+
+   changes to be made - totem
+- 
+
+
+
+   bug fixes
+-
