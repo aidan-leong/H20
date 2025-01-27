@@ -17,7 +17,7 @@ public class LightBeamTotem : MonoBehaviour
     public float reflectionMaxLength = 123f;
     public LayerMask playerLayer;
 
-    private bool isHitByBeam = false; 
+    public bool isHitByBeam = false; 
     private bool isFirstTotem = false;
 
     private void Start()
@@ -32,7 +32,6 @@ public class LightBeamTotem : MonoBehaviour
         }
     }
 
-
     private void Update()
     {
         if (isActivated)
@@ -46,7 +45,7 @@ public class LightBeamTotem : MonoBehaviour
         }
     }
 
-    private void UpdateBeam()
+    public void UpdateBeam()
     {
         Vector3 startPoint = transform.position;
         Vector3 beamDirection = transform.forward;
@@ -69,19 +68,17 @@ public class LightBeamTotem : MonoBehaviour
         {
             SetBeamPositions(startPoint, hit.point);
 
+            // Attempt to get either LightBeamTotem or DualLightBeam
             LightBeamTotem hitTotem = hit.collider.GetComponent<LightBeamTotem>();
+            DualLightBeam dualHitTotem = hit.collider.GetComponent<DualLightBeam>();
 
             isHitByBeam = false; // Reset the hit flag at the start of the frame.
-            if (!isFirstTotem)
+
+            if (hitTotem != null)
             {
-                //Debug.Log(this.gameObject.name  + " isHitByBeam = reset " + Time.frameCount);
-            }
-            
-            if (hitTotem != null && hitTotem != this)
-            {
+                // Handle LightBeamTotem logic
                 hitTotem.isHitByBeam = true; // Mark the hit totem as being hit by this beam.
-                //Debug.Log(this.gameObject.name + " hit " + hitTotem.name  + " isHitByBeam = true " + Time.frameCount);
-                
+
                 if (hitTotem.isCorrupted)
                 {
                     hitTotem.isCorrupted = false; // Cleansing of corruption.
@@ -90,6 +87,21 @@ public class LightBeamTotem : MonoBehaviour
                 if (!hitTotem.isActivated)
                 {
                     hitTotem.Activate(); // Activate the totem
+                }
+            }
+            else if (dualHitTotem != null)
+            {
+                // Handle DualLightBeam logic
+                dualHitTotem.isHitByBeam = true; // Mark the dual totem as being hit by this beam.
+
+                if (dualHitTotem.isCorrupted)
+                {
+                    dualHitTotem.isCorrupted = false; // Cleansing of corruption.
+                }
+
+                if (!dualHitTotem.isActivated)
+                {
+                    dualHitTotem.Activate(); // Activate the totem
                 }
             }
 
@@ -103,7 +115,6 @@ public class LightBeamTotem : MonoBehaviour
                 SceneManager.LoadScene("Lose");
             }
         }
-        
         else
         {
             Vector3 endPoint = startPoint + beamDirection * maxBeamLength;
@@ -111,7 +122,7 @@ public class LightBeamTotem : MonoBehaviour
         }
     }
 
-    private void ReflectBeam(RaycastHit hit, Vector3 beamDirection)
+    public void ReflectBeam(RaycastHit hit, Vector3 beamDirection)
     {
         Vector3 reflectionDirection = Vector3.Reflect(beamDirection, hit.normal); // Reflects direction.
         Vector3 reflectedStartPoint = hit.point; // Point of where the beam hits the mirror.
@@ -124,6 +135,8 @@ public class LightBeamTotem : MonoBehaviour
             lineRenderer.SetPosition(2, reflectedEndPoint);
 
             LightBeamTotem reflectedTotem = reflectedHit.collider.GetComponent<LightBeamTotem>();
+            DualLightBeam reflectedDualTotem = reflectedHit.collider.GetComponent<DualLightBeam>();
+
             if (reflectedTotem != null && reflectedTotem != this)
             {
                 reflectedTotem.isHitByBeam = true; // Mark the reflected hit totem as being hit by this beam.
@@ -136,6 +149,20 @@ public class LightBeamTotem : MonoBehaviour
                 if (!reflectedTotem.isActivated)
                 {
                     reflectedTotem.Activate();
+                }
+            }
+            else if (reflectedDualTotem != null && reflectedDualTotem != this)
+            {
+                reflectedDualTotem.isHitByBeam = true; // Mark the reflected hit totem as being hit by this beam.
+
+                if (reflectedDualTotem.isCorrupted)
+                {
+                    reflectedDualTotem.isCorrupted = false;
+                }
+
+                if (!reflectedDualTotem.isActivated)
+                {
+                    reflectedDualTotem.Activate();
                 }
             }
 
@@ -175,15 +202,11 @@ public class LightBeamTotem : MonoBehaviour
         {
             SceneManager.LoadScene("Win");
         }
-
-        //Debug.Log(gameObject.name + " activated " + Time.frameCount);
     }
 
-    private void Deactivate() // Deactivate the totem and turn off the beam.
+    public void Deactivate() // Deactivate the totem and turn off the beam.
     {
         isActivated = false;
         lineRenderer.enabled = false;
-
-        //Debug.Log(gameObject.name + " deactivated " + Time.frameCount);
     }
 }

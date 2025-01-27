@@ -17,11 +17,12 @@
 
 
    changes to be made - totem
-- new totem that splits beam into 2
-- pushable blocks
-- pushable blocks with mirrors attached
-- final totem which needs multiple beams to activate 
+- new totem that splits beam into 2 (DONE)
+- pushable blocks (DONE)
+- pushable blocks with mirrors attached (DONE)
+- final totem which needs multiple beams to activate
+- totem material is changed once activated; plus post proccessing
 
 
    bug fixes
--
+- weird behav with dualtotem's beams when interacting with pushables w/ mirrors; possibly a reflectbeam() error
