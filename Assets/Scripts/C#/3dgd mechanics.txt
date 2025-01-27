@@ -1,5 +1,5 @@
    current mechanics - general
-- pressure plate that rotates a totem
+- player will be able to press e and q near totems to rotate them
 - pressure plate that moves down a movable barrier
 - game clearing logic which pans camera and lock the last totem to activate last totem within level to show the door opening
 
@@ -12,12 +12,15 @@
 
 
    changes to be made - general
-- remove pressure plate that rotates, player will be able to press e and q to rotate totems instead (DONE)
+- camera is pannable(roblox) and zoomable
+- running and walking (not priority)
 
 
    changes to be made - totem
-- 
-
+- new totem that splits beam into 2
+- pushable blocks
+- pushable blocks with mirrors attached
+- final totem which needs multiple beams to activate 
 
 
    bug fixes
