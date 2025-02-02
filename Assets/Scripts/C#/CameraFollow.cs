@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
@@ -11,65 +12,43 @@ public class CameraFollow : MonoBehaviour
     public float camOffset = 0f;
 
     public GameObject target;
+
     private Vector3 newPos;
-
-    private Vector3 originalPosition;
-    private bool isPanning = false;
-    private Vector3 targetPosition;
-
-    void Start()
-    {
-        originalPosition = transform.position; //store the original camera position when the game starts
-    }
 
     void Update()
     {
-        if (!isPanning)
-        {
-            camPivot = target.transform.position; //follow player
-            newPos = camPivot;
+        camPivot = target.transform.position;
+        newPos = camPivot;
 
-            transform.eulerAngles = camRotation;
-            if (GetComponent<Camera>().orthographic)
-            {
-                newPos += -transform.forward * camDistance * 4F;
-                GetComponent<Camera>().orthographicSize = camDistance;
-            }
-            else
-            {
-                newPos += -transform.forward * camDistance;
-            }
-            newPos += transform.right * camOffset;
-            transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime * camSpeed);
+        transform.eulerAngles = camRotation;
+        if (GetComponent<Camera>().orthographic)
+        {
+            newPos += -transform.forward * camDistance * 4F;
+            GetComponent<Camera>().orthographicSize = camDistance;
         }
+        else
+            newPos += -transform.forward * camDistance;
+        newPos += transform.right * camOffset;
+        transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime * camSpeed);
     }
+
+    // New method to move the camera to a specific position
     public void MoveCameraToDoor(Vector3 doorPosition)
     {
-        if (isPanning)
-            return;
-
-        StartCoroutine(PanCameraToDoor(doorPosition));
+        // Animate the camera's movement to the specified door position
+        StartCoroutine(MoveToPosition(doorPosition));
     }
 
-    private IEnumerator PanCameraToDoor(Vector3 doorPosition)
+    private IEnumerator MoveToPosition(Vector3 targetPosition)
     {
-        isPanning = true;
-        targetPosition = doorPosition + new Vector3(0, 10, -2); 
-
-        float duration = 0.6f;
-        float timeElapsed = 0f;
-
-        Vector3 startingPos = transform.position;
-        while (timeElapsed < duration)
+        float moveSpeed = 3.0f;
+        while (Vector3.Distance(transform.position, targetPosition) > 0.1f)
         {
-            transform.position = Vector3.Lerp(startingPos, targetPosition, timeElapsed / duration); //move camera smoothly
-            timeElapsed += Time.unscaledDeltaTime; //unscaledDeltaTime = WaitForSecondsRealTime = use real seconds instead of in game time to ignore the game time freezing
+            transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * moveSpeed);
             yield return null;
         }
-        transform.position = targetPosition; 
 
-        yield return new WaitForSeconds(.6f); 
-
-        isPanning = false; //move back
+        // Ensure the camera ends at the exact target position
+        transform.position = targetPosition;
     }
 }

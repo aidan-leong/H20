@@ -13,7 +13,7 @@ public class TitleMenu : MonoBehaviour {
 
 	void OnGUI() {
 		if(GUI.Button(new Rect((Screen.width - 182) * 0.5f, 350, 182, 64), "PLAY GAME", playGame))
-			SceneManager.LoadScene("Tutorial");
+			SceneManager.LoadScene("Game");
 
 		if(GUI.Button(new Rect((Screen.width - 182) * 0.5f, 450, 182, 64), "INSTRUCTIONS", instructions))
 			SceneManager.LoadScene("Instructions");
