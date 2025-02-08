@@ -14,7 +14,11 @@
    changes to be made - general
 - camera is pannable(roblox) and zoomable
 - running and walking (not priority)
-
+- health bar
+- sheild with toggle (DONE)
+- at the start of the game, there is a lever the player has to interact with that makes the window plane move up and lets the sun light in onto the first totem to light it up 
+(spot light inactive then active and window plane moves up w anim)
+- enemies that follow player, dies when hit by beam 
 
    changes to be made - totem
 - new totem that splits beam into 2 (DONE)
@@ -25,4 +29,4 @@
 
 
    bug fixes
-- weird behav with dualtotem's beams when interacting with pushables w/ mirrors; possibly a reflectbeam() error
+- weird behav with dualtotem's beams when interacting with pushables w/ mirrors; possibly a reflectbeam() error (fixed)

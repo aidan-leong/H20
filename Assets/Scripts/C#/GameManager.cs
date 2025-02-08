@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
         isDoor01Opened = true;
 
         //trigger camera to move to the door position
-        cameraFollow.MoveCameraToDoor(Level01Exit.transform.position);
+        cameraFollow.MoveCameraToDoor(Level01Exit.transform.position, 8.0f, new Vector3(60, 0, 0));
 
         RotatingObject script = LevelClearer01.GetComponent<RotatingObject>(); //small section to prevent furthur movement after level clearance
         if (script != null)
@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour
     {
         isDoor02Opened = true;
 
-        cameraFollow.MoveCameraToDoor(Level02Exit.transform.position);
+        cameraFollow.MoveCameraToDoor(Level02Exit.transform.position, 5.0f, new Vector3(60, 45, 0));
 
         RotatingObject script = LevelClearer02.GetComponent<RotatingObject>(); //small section to prevent furthur movement after level clearance
         if (script != null)
@@ -120,7 +120,7 @@ public class GameManager : MonoBehaviour
     {
         isDoor03Opened = true;
 
-        cameraFollow.MoveCameraToDoor(Level03Exit.transform.position);
+        cameraFollow.MoveCameraToDoor(Level03Exit.transform.position, 5.0f, new Vector3(60, 45, 0));
 
         RotatingObject script = LevelClearer03.GetComponent<RotatingObject>(); //small section to prevent furthur movement after level clearance; qol changes
         if (script != null)
@@ -149,7 +149,7 @@ public class GameManager : MonoBehaviour
     {
         isDoor04Opened = true;
 
-        cameraFollow.MoveCameraToDoor(Level04Exit.transform.position);
+        cameraFollow.MoveCameraToDoor(Level04Exit.transform.position, 5.0f, new Vector3(60, 45, 0));
 
         RotatingObject script = LevelClearer04.GetComponent<RotatingObject>(); //small section to prevent furthur movement after level clearance
         if (script != null)
@@ -176,7 +176,7 @@ public class GameManager : MonoBehaviour
     {
         isDoor05Opened = true;
 
-        cameraFollow.MoveCameraToDoor(Level05Exit.transform.position);
+        cameraFollow.MoveCameraToDoor(Level05Exit.transform.position, 5.0f, new Vector3(60, 45, 0));
 
         RotatingObject script = LevelClearer05.GetComponent<RotatingObject>(); //small section to prevent furthur movement after level clearance
         if (script != null)
