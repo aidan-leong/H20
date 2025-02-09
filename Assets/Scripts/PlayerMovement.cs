@@ -1,24 +1,41 @@
 using UnityEngine;
+using UnityEngine.UI; // Required for UI components
 using System.Collections;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Movement Settings")]
     public float speed = 5f; // Movement speed
     private Animator animator;
     private Rigidbody rb;
 
     private Vector3 movement;
-    public GameObject shield;
-    public float shieldDuration = 5.0f;
-    public float shieldCD = 10.0f;
 
+    [Header("Shield Settings")]
+    public GameObject shield;           // Shield object
+    public float shieldDuration = 5.0f; // Duration of the shield
+    public float shieldCD = 10.0f;      // Cooldown for the shield
     private float shieldCooldownTimer = 0f;
+
+    [Header("UI Elements")]
+    public Button shieldButton;  // Reference to the shield button
+    public Text buttonText;      // Text on the button to display cooldown
 
     void Start()
     {
         // Get components
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
+
+        // Ensure button is initially interactable and text is set
+        if (shieldButton != null)
+        {
+            shieldButton.interactable = true;
+            buttonText.text = "";
+        }
+
+        // Add listener to button click
+        shieldButton.onClick.AddListener(OnShieldButtonPressed);
     }
 
     void Update()
@@ -26,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
         // Reset movement
         movement = Vector3.zero;
 
-        // Get input for IJKL
+        // Get input for WASD
         if (Input.GetKey(KeyCode.W)) // Forward
             movement += Vector3.forward;
         if (Input.GetKey(KeyCode.S)) // Backward
@@ -42,16 +59,16 @@ public class PlayerMovement : MonoBehaviour
         // Update animator speed parameter
         animator.SetFloat("Speed", movement.magnitude);
 
-        // Handle shield activation with cooldown
-        if (Input.GetKeyDown(KeyCode.F) && shieldCooldownTimer <= 0f)
+        if (Input.GetKeyDown(KeyCode.F))
         {
-            StartCoroutine(Shield());
+            OnShieldButtonPressed();
         }
 
         // Update cooldown timer
         if (shieldCooldownTimer > 0f)
         {
             shieldCooldownTimer -= Time.deltaTime;
+            UpdateShieldButtonUI();
         }
     }
 
@@ -66,12 +83,35 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void OnShieldButtonPressed()
+    {
+        if (shieldCooldownTimer <= 0f)
+        {
+            StartCoroutine(Shield());
+        }
+    }
+
     private IEnumerator Shield()
     {
-        Debug.Log("Shield activated");
+        //Debug.Log("Shield activated");
         shield.SetActive(true);
         shieldCooldownTimer = shieldCD;  // Set cooldown timer after activating shield
+        UpdateShieldButtonUI();         // Update UI immediately
+        shieldButton.interactable = false; // Disable button during cooldown
         yield return new WaitForSeconds(shieldDuration);
         shield.SetActive(false);
+    }
+
+    private void UpdateShieldButtonUI()
+    {
+        if (shieldCooldownTimer > 0f)
+        {
+            buttonText.text = $"{Mathf.Ceil(shieldCooldownTimer)}";
+        }
+        else
+        {
+            buttonText.text = "";
+            shieldButton.interactable = true; // Re-enable button when cooldown ends
+        }
     }
 }

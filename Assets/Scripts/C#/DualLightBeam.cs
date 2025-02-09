@@ -15,6 +15,7 @@ public class DualLightBeam : MonoBehaviour
     public bool isHitByBeam = false;
 
     private LineRenderer lineRenderer;
+    public Health health;
 
     private void Start()
     {
@@ -41,13 +42,19 @@ public class DualLightBeam : MonoBehaviour
     public void UpdateBeams()
     {
         List<Vector3> beamPoints = new List<Vector3>();
-        beamPoints.AddRange(CalculateBeamPath(transform.position, transform.forward));
-        beamPoints.AddRange(CalculateBeamPath(transform.position, -transform.forward));
         
+        // Forward beam
+        beamPoints.AddRange(CalculateBeamPath(transform.position, transform.forward));
+
+        // Backward beam
+        List<Vector3> backwardBeam = CalculateBeamPath(transform.position, -transform.forward);
+        backwardBeam.Reverse(); // Reverse to ensure continuity.
+        beamPoints.AddRange(backwardBeam);
+
+        // Update LineRenderer
         lineRenderer.positionCount = beamPoints.Count;
         lineRenderer.SetPositions(beamPoints.ToArray());
     }
-
     private List<Vector3> CalculateBeamPath(Vector3 startPoint, Vector3 direction)
     {
         List<Vector3> beamPoints = new List<Vector3> { startPoint };
@@ -81,7 +88,7 @@ public class DualLightBeam : MonoBehaviour
                 
                 if (isCorrupted && hit.collider.CompareTag("Player"))
                 {
-                    SceneManager.LoadScene("Lose");
+                    health.TakeDamage(1);
                 }
                 break;
             }
