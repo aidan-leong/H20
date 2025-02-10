@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 using System.Collections.Generic;
 
 public class LightBeamTotem : MonoBehaviour
@@ -21,8 +22,11 @@ public class LightBeamTotem : MonoBehaviour
     public bool isHitByBeam = false; 
     private bool isFirstTotem = false;
     public Health health;
+    public FinalTotem finalTotem;
 
-    public int maxReflections = 5; // Number of reflections the beam can handle
+    public int maxReflections = 5; 
+    public GameObject effects;
+    public Sphere sphere;
 
     private void Start()
     {
@@ -38,11 +42,21 @@ public class LightBeamTotem : MonoBehaviour
 
     private void Update()
     {
+        if (sphere != null)
+        {
+            sphere.Activated = false; //Debug.Log("deactivate" + Time.frameCount);
+        }
+
         if (isActivated)
         {
             if (!isHitByBeam && !isFirstTotem)
             {
                 Deactivate();
+            }
+
+            if (sphere != null)
+            {
+                sphere.Activated = true; //Debug.Log("activate" + Time.frameCount);
             }
 
             UpdateBeam();
@@ -66,19 +80,18 @@ public class LightBeamTotem : MonoBehaviour
 
                 LightBeamTotem hitTotem = hit.collider.GetComponent<LightBeamTotem>();
                 DualLightBeam dualHitTotem = hit.collider.GetComponent<DualLightBeam>();
+                FinalTotem finalHitTotem = hit.collider.GetComponent<FinalTotem>();
 
                 isHitByBeam = false;
 
                 if (hitTotem != null)
                 {
                     hitTotem.isHitByBeam = true;
-                    if (hitTotem.isCorrupted) hitTotem.isCorrupted = false;
                     if (!hitTotem.isActivated) hitTotem.Activate();
                 }
                 else if (dualHitTotem != null)
                 {
                     dualHitTotem.isHitByBeam = true;
-                    if (dualHitTotem.isCorrupted) dualHitTotem.isCorrupted = false;
                     if (!dualHitTotem.isActivated) dualHitTotem.Activate();
                 }
 
@@ -90,11 +103,19 @@ public class LightBeamTotem : MonoBehaviour
                     continue; // Continue reflecting
                 }
 
+                if (finalHitTotem != null)
+                {
+                    switch (finalTotem.activate1)
+                    {
+                        case false: finalTotem.activate1 = true; break;
+                        case true: finalTotem.activate2 = true; break;
+                    }
+                }
+                
                 if (isCorrupted && hit.collider.CompareTag("Player"))
                 {
                     health.TakeDamage(1);
                 }
-
                 break; // Stop tracing if it's not a mirror
             }
             else
@@ -129,21 +150,33 @@ public class LightBeamTotem : MonoBehaviour
         isActivated = true;
         lineRenderer.enabled = true;
 
-        if (gameObject.name.StartsWith("LastTotem_"))
+        if (effects != null)
         {
-            int level = int.Parse(gameObject.name.Split('_')[1].Replace("Lvl", ""));
-            gameManager?.ClearLevel(level);
+            StartCoroutine(PlayEffects());
         }
 
-        if (gameObject.name == "LastTotem_Lvl6")
-        {
-            SceneManager.LoadScene("Win");
-        }
+        // if (gameObject.name.StartsWith("LastTotem_"))
+        // {
+        //     int level = int.Parse(gameObject.name.Split('_')[1].Replace("Lvl", ""));
+        //     gameManager?.ClearLevel(level);
+        // }
     }
 
     public void Deactivate()
     {
         isActivated = false;
         lineRenderer.enabled = false;
+
+        if (sphere != null)
+        {
+            sphere.Activated = false;
+        }
+    }
+
+    private IEnumerator PlayEffects()
+    {
+        effects.SetActive(true);
+        yield return new WaitForSeconds(2.0f);
+        effects.SetActive(false);
     }
 }

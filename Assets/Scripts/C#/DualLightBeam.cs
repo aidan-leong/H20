@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using System.Collections;
 
 public class DualLightBeam : MonoBehaviour
 {
@@ -15,11 +16,16 @@ public class DualLightBeam : MonoBehaviour
     public bool isHitByBeam = false;
 
     private LineRenderer lineRenderer;
+    private GameManager gameManager;
     public Health health;
+    public FinalTotem finalTotem;
+    public GameObject effects;
+    public Sphere sphere;
 
     private void Start()
     {
         lineRenderer = GetComponent<LineRenderer>();
+
         if (isActivated)
         {
             Activate();
@@ -28,14 +34,26 @@ public class DualLightBeam : MonoBehaviour
 
     private void Update()
     {
+        if (sphere != null)
+        {
+            sphere.Activated = false; //Debug.Log("deactivate" + Time.frameCount);
+        }
+        
         if (isActivated)
         {
             if (!isHitByBeam)
             {
                 Deactivate();
             }
+
+            if (sphere != null)
+            {
+                sphere.Activated = true; 
+            }
+
             UpdateBeams();
         }
+
         isHitByBeam = false;
     }
 
@@ -69,6 +87,7 @@ public class DualLightBeam : MonoBehaviour
                 
                 DualLightBeam dualHitTotem = hit.collider.GetComponent<DualLightBeam>();
                 LightBeamTotem hitTotem = hit.collider.GetComponent<LightBeamTotem>();
+                FinalTotem finalHitTotem = hit.collider.GetComponent<FinalTotem>();
                 
                 if (hitTotem != null)
                 {
@@ -84,6 +103,15 @@ public class DualLightBeam : MonoBehaviour
                     ReflectBeam(hit, ref direction, ref startPoint);
                     reflections++;
                     continue;
+                }
+
+                else if (finalHitTotem != null)
+                {
+                    switch (finalTotem.activate1)
+                    {
+                        case false: finalTotem.activate1 = true; break;
+                        case true: finalTotem.activate2 = true; break;
+                    }
                 }
                 
                 if (isCorrupted && hit.collider.CompareTag("Player"))
@@ -112,27 +140,47 @@ public class DualLightBeam : MonoBehaviour
         if (hitTotem is DualLightBeam dualTotem)
         {
             dualTotem.isHitByBeam = true;
-            if (dualTotem.isCorrupted) dualTotem.isCorrupted = false;
             if (!dualTotem.isActivated) dualTotem.Activate();
         }
         else if (hitTotem is LightBeamTotem lightTotem)
         {
             lightTotem.isHitByBeam = true;
-            if (lightTotem.isCorrupted) lightTotem.isCorrupted = false;
             if (!lightTotem.isActivated) lightTotem.Activate();
         }
     }
 
     public void Activate()
     {
-        if (isActivated) return;
         isActivated = true;
         lineRenderer.enabled = true;
+
+        if (effects != null)
+        {
+            StartCoroutine(PlayEffects());
+        }
+
+        if (gameObject.name.StartsWith("LastTotem_"))
+        {
+            int level = int.Parse(gameObject.name.Split('_')[1].Replace("Lvl", ""));
+            gameManager?.ClearLevel(level);
+        }
     }
 
     public void Deactivate()
     {
         isActivated = false;
         lineRenderer.enabled = false;
+
+        if (sphere != null)
+        {
+            sphere.Activated = false;
+        }
+    }
+
+    private IEnumerator PlayEffects()
+    {
+        effects.SetActive(true);
+        yield return new WaitForSeconds(2.0f);
+        effects.SetActive(false);
     }
 }
