@@ -5,11 +5,27 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
-    // List of GameObjects to remain active even during pause
-    [SerializeField] private GameObject[] unaffectedElements;
+    // GameObject to activate when the game is paused
+    [SerializeField] private GameObject pauseMenu;
 
     // Tracks whether the game is paused
     private bool isPaused = false;
+
+    private void Update()
+    {
+        // Check for the Escape key press
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (isPaused)
+            {
+                ResumeGame();
+            }
+            else
+            {
+                PauseGame();
+            }
+        }
+    }
 
     // Pause the game
     public void PauseGame()
@@ -18,11 +34,14 @@ public class LevelManager : MonoBehaviour
         Time.timeScale = 0; // Freeze the game
         isPaused = true;
 
-        // Keep unaffected elements active
-        foreach (var element in unaffectedElements)
+        // Activate the pause menu
+        if (pauseMenu != null)
         {
-            if (element != null)
-                element.SetActive(true);
+            pauseMenu.SetActive(true);
+        }
+        else
+        {
+            Debug.LogWarning("Pause menu GameObject is not assigned in the Inspector!");
         }
     }
 
@@ -32,6 +51,12 @@ public class LevelManager : MonoBehaviour
         if (!isPaused) return; // Prevent resuming if not paused
         Time.timeScale = 1; // Resume the game
         isPaused = false;
+
+        // Deactivate the pause menu
+        if (pauseMenu != null)
+        {
+            pauseMenu.SetActive(false);
+        }
     }
 
     // Restart the current scene
