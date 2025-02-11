@@ -5,7 +5,7 @@
 
 
    current mechanics - totem  
-- evil totem which kills player when hit
+- evil totem which damages player when hit
 - mirror that reflects a totem's beam
 - beam activation and deactivation based on if it is hit by another totem
 
@@ -19,15 +19,19 @@
 - at the start of the game, there is a lever the player has to interact with that makes the window plane move up and lets the sun light in onto the first totem to light it up 
 (spot light inactive then active and window plane moves up w anim)
 - enemies that follow player, dies when hit by beam
+- spawn locations change with checkpoints 
 
    changes to be made - totem
 - new totem that splits beam into 2 (DONE)
 - pushable blocks (DONE)
 - pushable blocks with mirrors attached (DONE)
-- final totem which needs multiple beams to activate
-- totem material is changed once activated; plus post proccessing
+- final totem which needs 2 beams to activate (DONE)
+- totem material is changed once activated; plus post proccessing (DONE)
 
 
-   bug fixes
+   bug and such
 - weird behav with dualtotem's beams when interacting with pushables w/ mirrors; possibly a reflectbeam() error
-(only happens for the +y beam, might not be fixed since shouldnt be able to be encountered in level)
+(only happens for the +y beam, might not be fixed since shouldnt be able to be encounterable in level)
+
+- totem doesnt get updated with deactivation logic until line renderer touched by player?? 
+(only when placed in -4x row in test scene?? might not fixed as well since might wont be a problem)

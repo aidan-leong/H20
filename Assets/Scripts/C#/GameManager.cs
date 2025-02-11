@@ -21,12 +21,6 @@ public class GameManager : MonoBehaviour
     private bool isDoor03Opened = false;
     private bool isDoor04Opened = false;
     private bool isDoor05Opened = false;
-    public GameObject LevelClearer01;
-    public GameObject LevelClearer02;
-    public GameObject LevelClearer03;
-    public GameObject LevelClearer04;
-    public GameObject LevelClearer05;
-
     public GameObject Level03MovableBarrier;
 
     public CameraFollow cameraFollow;
@@ -55,10 +49,6 @@ public class GameManager : MonoBehaviour
         {
             Level05Cleared = true;
         }
-        if (level == 6)
-        {
-            SceneManager.LoadScene("Win");
-        }
     }
 
     private IEnumerator OpenDoor01()
@@ -67,12 +57,6 @@ public class GameManager : MonoBehaviour
 
         //trigger camera to move to the door position
         cameraFollow.MoveCameraToDoor(Level01Exit.transform.position, 8.0f, new Vector3(60, 0, 0));
-
-        RotatingObject script = LevelClearer01.GetComponent<RotatingObject>(); //small section to prevent furthur movement after level clearance
-        if (script != null)
-        {
-            Destroy(script);
-        }
 
         Vector3 targetPosition = Level01Exit.transform.position + new Vector3(0, -1, 0); //set the targeted pos to be -1y of og pos
 
@@ -95,12 +79,6 @@ public class GameManager : MonoBehaviour
 
         cameraFollow.MoveCameraToDoor(Level02Exit.transform.position, 5.0f, new Vector3(60, 45, 0));
 
-        RotatingObject script = LevelClearer02.GetComponent<RotatingObject>(); //small section to prevent furthur movement after level clearance
-        if (script != null)
-        {
-            Destroy(script);
-        }
-
         Vector3 targetPosition = Level02Exit.transform.position + new Vector3(0, -1, 0);
 
         while (Vector3.Distance(Level02Exit.transform.position, targetPosition) > 0.01f)
@@ -121,12 +99,6 @@ public class GameManager : MonoBehaviour
         isDoor03Opened = true;
 
         cameraFollow.MoveCameraToDoor(Level03Exit.transform.position, 5.0f, new Vector3(60, 45, 0));
-
-        RotatingObject script = LevelClearer03.GetComponent<RotatingObject>(); //small section to prevent furthur movement after level clearance; qol changes
-        if (script != null)
-        {
-            Destroy(script);
-        }
 
         Destroy(Level03MovableBarrier); //remove the movable object so the beam stays even when player isn't on pressure plate
 
@@ -151,12 +123,6 @@ public class GameManager : MonoBehaviour
 
         cameraFollow.MoveCameraToDoor(Level04Exit.transform.position, 5.0f, new Vector3(60, 45, 0));
 
-        RotatingObject script = LevelClearer04.GetComponent<RotatingObject>(); //small section to prevent furthur movement after level clearance
-        if (script != null)
-        {
-            Destroy(script);
-        }
-
         Vector3 targetPosition = Level04Exit.transform.position + new Vector3(0, -1, 0);
 
         while (Vector3.Distance(Level04Exit.transform.position, targetPosition) > 0.01f)
@@ -177,12 +143,6 @@ public class GameManager : MonoBehaviour
         isDoor05Opened = true;
 
         cameraFollow.MoveCameraToDoor(Level05Exit.transform.position, 5.0f, new Vector3(60, 45, 0));
-
-        RotatingObject script = LevelClearer05.GetComponent<RotatingObject>(); //small section to prevent furthur movement after level clearance
-        if (script != null)
-        {
-            Destroy(script);
-        }
 
         Vector3 targetPosition = Level05Exit.transform.position + new Vector3(0, -1, 0);
 
