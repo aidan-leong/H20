@@ -112,11 +112,11 @@ public class LightBeamTotem : MonoBehaviour
                     }
                 }
                 
-                if (isCorrupted && hit.collider.CompareTag("Player"))
+                if (hit.collider.CompareTag("Enemy"))
                 {
-                    health.TakeDamage(1);
+                    Destroy(hit.collider.gameObject);
                 }
-                break; // Stop tracing if it's not a mirror
+                break; 
             }
             else
             {

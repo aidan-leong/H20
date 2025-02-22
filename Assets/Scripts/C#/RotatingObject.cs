@@ -10,12 +10,12 @@ public class RotatingObject : MonoBehaviour
     {
         if (canRotate)
         {
-            if (Input.GetKey("e"))
+            if (Input.GetKey("e") || Input.GetKey("o"))
             {
                 RotateClockwise();
             }
 
-            if (Input.GetKey("q"))
+            if (Input.GetKey("q") || Input.GetKey("u"))
             {
                 RotateCounterClockwise();
             }

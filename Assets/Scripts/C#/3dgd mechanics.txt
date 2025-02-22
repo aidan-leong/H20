@@ -12,13 +12,13 @@
 
 
    changes to be made - general
-- camera is pannable(roblox) and zoomable
-- running and walking (not priority)
+- camera is pannable(roblox) and zoomable 
+- running and walking (not priority) (not to be done)
 - health bar (DONE)
 - sheild with toggle (DONE)
 - at the start of the game, there is a lever the player has to interact with that makes the window plane move up and lets the sun light in onto the first totem to light it up 
 (spot light inactive then active and window plane moves up w anim)
-- enemies that follow player, dies when hit by beam
+- enemies that follow player, dies when hit by beam (DONE)
 - spawn locations change with checkpoints 
 
    changes to be made - totem
@@ -29,9 +29,11 @@
 - totem material is changed once activated; plus post proccessing (DONE)
 
 
-   bug and such
+   bugs and such
 - weird behav with dualtotem's beams when interacting with pushables w/ mirrors; possibly a reflectbeam() error
 (only happens for the +y beam, might not be fixed since shouldnt be able to be encounterable in level)
 
-- totem doesnt get updated with deactivation logic until line renderer touched by player?? 
-(only when placed in -4x row in test scene?? might not fixed as well since might wont be a problem)
+- totem doesnt get updated with deactivation logic until line renderer touched by player??
+(only when placed in -4x row in test scene?? might not be a problem)
+
+- sometimes enemies go through objects...

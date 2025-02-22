@@ -2036,7 +2036,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8677285521430766841
 Transform:
   m_ObjectHideFlags: 0
@@ -2135,10 +2135,10 @@ GameObject:
   - component: {fileID: 675976138834958748}
   - component: {fileID: 6625918767950180927}
   - component: {fileID: 1099603938941506233}
-  - component: {fileID: 1908801230272522145}
-  m_Layer: 0
+  - component: {fileID: 706145309430657325}
+  m_Layer: 8
   m_Name: Girl
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2233,7 +2233,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1.524994, z: 1}
   m_Center: {x: 0, y: 0.75110525, z: 0}
---- !u!114 &1908801230272522145
+--- !u!114 &706145309430657325
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2242,10 +2242,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 6779845090501701281}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b34986dd87aeba42a0000fb955408e1, type: 3}
+  m_Script: {fileID: 11500000, guid: 44064a5176056834d9c82d72dac74af3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  sprintSpeed: 10
+  sprintDuration: 3
+  sprintCooldown: 5
+  sprintButton: {fileID: 0}
+  shield: {fileID: 6693611638175178881}
+  shieldDuration: 5
+  shieldCD: 10
+  shieldButton: {fileID: 0}
+  buttonText: {fileID: 0}
 --- !u!1 &6839977229371741756
 GameObject:
   m_ObjectHideFlags: 0

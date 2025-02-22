@@ -26,6 +26,10 @@ public class DualLightBeam : MonoBehaviour
     {
         lineRenderer = GetComponent<LineRenderer>();
 
+        // Ensure references are assigned
+        if (gameManager == null) gameManager = FindObjectOfType<GameManager>(); // Assign GameManager if not set
+        if (effects == null) Debug.LogWarning("Effects are not assigned in the Inspector.");
+        
         if (isActivated)
         {
             Activate();
@@ -36,7 +40,7 @@ public class DualLightBeam : MonoBehaviour
     {
         if (sphere != null)
         {
-            sphere.Activated = false; //Debug.Log("deactivate" + Time.frameCount);
+            sphere.Activated = false; // Debugging step, can be removed later
         }
         
         if (isActivated)
@@ -54,7 +58,7 @@ public class DualLightBeam : MonoBehaviour
             UpdateBeams();
         }
 
-        isHitByBeam = false;
+        isHitByBeam = false; // Reset flag after each frame
     }
 
     public void UpdateBeams()
@@ -73,22 +77,22 @@ public class DualLightBeam : MonoBehaviour
         lineRenderer.positionCount = beamPoints.Count;
         lineRenderer.SetPositions(beamPoints.ToArray());
     }
+
     private List<Vector3> CalculateBeamPath(Vector3 startPoint, Vector3 direction)
     {
         List<Vector3> beamPoints = new List<Vector3> { startPoint };
-        int maxReflections = 10;
+        int maxReflections = 3;  // Prevent infinite reflections
         int reflections = 0;
-        
+
         while (reflections < maxReflections)
         {
             if (Physics.Raycast(startPoint, direction, out RaycastHit hit, maxBeamLength, hitLayers))
             {
                 beamPoints.Add(hit.point);
-                
+
                 DualLightBeam dualHitTotem = hit.collider.GetComponent<DualLightBeam>();
                 LightBeamTotem hitTotem = hit.collider.GetComponent<LightBeamTotem>();
-                FinalTotem finalHitTotem = hit.collider.GetComponent<FinalTotem>();
-                
+
                 if (hitTotem != null)
                 {
                     HandleTotemHit(hitTotem);
@@ -97,28 +101,18 @@ public class DualLightBeam : MonoBehaviour
                 {
                     HandleTotemHit(dualHitTotem);
                 }
-                
+
+                // **Reflection Logic**
                 if (((1 << hit.collider.gameObject.layer) & mirrorLayer) != 0)
                 {
                     ReflectBeam(hit, ref direction, ref startPoint);
                     reflections++;
-                    continue;
+                    continue;  // Continue reflecting the beam
                 }
-
-                else if (finalHitTotem != null)
+                else
                 {
-                    switch (finalTotem.activate1)
-                    {
-                        case false: finalTotem.activate1 = true; break;
-                        case true: finalTotem.activate2 = true; break;
-                    }
+                    break;  // Stop the loop if it's not a mirror
                 }
-                
-                if (isCorrupted && hit.collider.CompareTag("Player"))
-                {
-                    health.TakeDamage(1);
-                }
-                break;
             }
             else
             {
@@ -126,14 +120,16 @@ public class DualLightBeam : MonoBehaviour
                 break;
             }
         }
+
         return beamPoints;
     }
 
     private void ReflectBeam(RaycastHit hit, ref Vector3 direction, ref Vector3 startPoint)
     {
         direction = Vector3.Reflect(direction, hit.normal);
-        startPoint = hit.point;
+        startPoint = hit.point + direction * 0.01f; // Move startPoint slightly forward to avoid re-hitting the same surface
     }
+
 
     private void HandleTotemHit(object hitTotem)
     {
@@ -159,6 +155,7 @@ public class DualLightBeam : MonoBehaviour
             StartCoroutine(PlayEffects());
         }
 
+        // Ensure GameManager is assigned for clearing levels
         if (gameObject.name.StartsWith("LastTotem_"))
         {
             int level = int.Parse(gameObject.name.Split('_')[1].Replace("Lvl", ""));
@@ -179,8 +176,15 @@ public class DualLightBeam : MonoBehaviour
 
     private IEnumerator PlayEffects()
     {
-        effects.SetActive(true);
-        yield return new WaitForSeconds(2.0f);
-        effects.SetActive(false);
+        if (effects != null)
+        {
+            effects.SetActive(true);
+            yield return new WaitForSeconds(2.0f);
+            effects.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning("Effects not set. Skipping effect playback.");
+        }
     }
 }
