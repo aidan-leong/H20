@@ -72,8 +72,8 @@ public class PlayerMovement : MonoBehaviour
         movement = Vector3.zero;
 
         // Get input for WASD
-        float horizontal = Input.GetAxis("Horizontal"); // A/D or Left/Right arrow keys
-        float vertical = Input.GetAxis("Vertical");     // W/S or Up/Down arrow keys
+        float horizontal = Input.GetAxis("Horizontal (P1)"); // A/D or Left/Right arrow keys
+        float vertical = Input.GetAxis("Vertical (P1)");     // W/S or Up/Down arrow keys
 
         // Get camera's forward and right directions (flattened to ignore vertical movement)
         Vector3 cameraForward = playerCamera.transform.forward;

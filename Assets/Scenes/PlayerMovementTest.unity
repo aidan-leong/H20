@@ -427,11 +427,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3632864969088653270, guid: fd438cd788d31df4795e4a1db0e069a3, type: 3}
   m_PrefabInstance: {fileID: 17854332}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &20578240 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6693611638175178881, guid: 9963117b16f023c46ad767be7b6fb038, type: 3}
-  m_PrefabInstance: {fileID: 1734675042}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &31109365
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7924,6 +7919,14 @@ MonoBehaviour:
   shieldCD: 10
   shieldButton: {fileID: 1074546511}
   buttonText: {fileID: 416922120}
+  playerCamera: {fileID: 0}
+  playerCamera2: {fileID: 0}
+  zoomSpeed: 2
+  minZoom: 5
+  maxZoom: 20
+  panSpeed: 10
+  cameraOffset: {x: 0, y: 5, z: -10}
+  cameraFollowSpeed: 5
 --- !u!1001 &1333786179
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9608,7 +9611,7 @@ PrefabInstance:
       addedObject: {fileID: 1734675044}
     - targetCorrespondingSourceObject: {fileID: 6779845090501701281, guid: 9963117b16f023c46ad767be7b6fb038, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1734675050}
+      addedObject: {fileID: 1734675055}
   m_SourcePrefab: {fileID: 100100000, guid: 9963117b16f023c46ad767be7b6fb038, type: 3}
 --- !u!1 &1734675043 stripped
 GameObject:
@@ -9634,7 +9637,7 @@ MonoBehaviour:
   playerRenderer: {fileID: 0}
   damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
   healthBar: {fileID: 1593927056}
---- !u!114 &1734675050
+--- !u!114 &1734675055
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9643,19 +9646,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1734675043}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44064a5176056834d9c82d72dac74af3, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b34986dd87aeba42a0000fb955408e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
   sprintSpeed: 10
   sprintDuration: 3
   sprintCooldown: 5
-  sprintButton: {fileID: 917658881}
-  shield: {fileID: 20578240}
+  sprintButton: {fileID: 0}
+  shield: {fileID: 0}
   shieldDuration: 5
   shieldCD: 10
-  shieldButton: {fileID: 54413263}
-  buttonText: {fileID: 667923057}
+  shieldButton: {fileID: 0}
+  buttonText: {fileID: 0}
   playerCamera: {fileID: 1947268678}
   playerCamera2: {fileID: 1903851073}
   zoomSpeed: 2
