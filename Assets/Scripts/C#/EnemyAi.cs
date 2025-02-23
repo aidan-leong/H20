@@ -35,7 +35,7 @@ public class EnemyAI : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player 1") || other.CompareTag("Player 2"))
         {
             Health playerHealth = other.GetComponent<Health>();
             if (playerHealth != null)

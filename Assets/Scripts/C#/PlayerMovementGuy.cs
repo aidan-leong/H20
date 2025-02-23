@@ -259,7 +259,7 @@ public class PlayerMovementGuy : MonoBehaviour
 
     private void HandleCameraPanning()
     {
-        Debug.Log("RightStickHorizontal: " + Input.GetAxis("RightStickHorizontal"));
+        //Debug.Log("RightStickHorizontal: " + Input.GetAxis("RightStickHorizontal"));
 
         // Read the input value from the right stick's horizontal axis
         float rotationY = cameraPanAction.ReadValue<float>() * panSpeed * Time.deltaTime;

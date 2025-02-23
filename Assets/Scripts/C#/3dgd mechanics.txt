@@ -12,7 +12,7 @@
 
 
    changes to be made - general
-- camera is pannable(roblox) and zoomable 
+- camera is pannable(roblox) and zoomable (DONE)
 - running and walking (not priority) (not to be done)
 - health bar (DONE)
 - sheild with toggle (DONE)
