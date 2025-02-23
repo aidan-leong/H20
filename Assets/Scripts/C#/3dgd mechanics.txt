@@ -34,6 +34,6 @@
 (only happens for the +y beam, might not be fixed since shouldnt be able to be encounterable in level) (FIXED)
 
 - totem doesnt get updated with deactivation logic until line renderer touched by player??
-(only when placed in -4x row in test scene?? might not be a problem) (FIXED)
+(only when placed in -4x row in test scene?? might not be a problem) (NOTFIXED?)
 
 - sometimes enemies go through objects...?

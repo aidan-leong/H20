@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5614576415411395588}
   - component: {fileID: 3770695070553159614}
   - component: {fileID: 6201442743221490792}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: mirrorCFrame (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 2640647126431620975}
   - component: {fileID: 144867340080401725}
   - component: {fileID: 437618173388258146}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: mirrorCFrame (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -262,7 +262,7 @@ GameObject:
   - component: {fileID: 670616532424855992}
   - component: {fileID: 2044180738997508552}
   - component: {fileID: 5262159849056634825}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: mirrorCFrame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -429,7 +429,7 @@ GameObject:
   - component: {fileID: 5205005298116812841}
   - component: {fileID: 2254058339596332448}
   - component: {fileID: 2138222761906607089}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: mirrorCFrame (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

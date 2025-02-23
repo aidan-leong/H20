@@ -29,7 +29,7 @@ public class PressurePlateForMove : MonoBehaviour
     //checks for collider
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") || other.CompareTag("Box"))
         {
             isPlayerOnPlate = true;
         }
@@ -37,7 +37,7 @@ public class PressurePlateForMove : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") || other.CompareTag("Box"))
         {
             isPlayerOnPlate = false;
         }
