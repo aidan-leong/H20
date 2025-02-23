@@ -503,6 +503,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ShadowParticles
       objectReference: {fileID: 0}
+    - target: {fileID: 3695774341742564114, guid: 16bd9def3bbfe4941aab91fa9e72d4d8, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6948540370574435209, guid: 16bd9def3bbfe4941aab91fa9e72d4d8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
