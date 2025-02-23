@@ -15,11 +15,11 @@ public class DualLightBeam : MonoBehaviour
     public bool isHitByBeam = false;
 
     [Header("Beam Holders")]
-    public GameObject beamHolderForward;  // Holds the forward beam
-    public GameObject beamHolderBackward; // Holds the backward beam
+    public List<GameObject> beamHolders;  // List of beam holders
+    private List<LineRenderer> lineRenderers;
 
-    private LineRenderer lineRendererForward;
-    private LineRenderer lineRendererBackward;
+    [Header("Beam Directions")]
+    public List<Vector3> beamDirections;  // List of beam directions (in local space)
 
     [Header("Other References")]
     public GameObject effects;
@@ -28,11 +28,12 @@ public class DualLightBeam : MonoBehaviour
 
     private void Start()
     {
-        lineRendererForward = beamHolderForward.GetComponent<LineRenderer>();
-        lineRendererBackward = beamHolderBackward.GetComponent<LineRenderer>();
-
-        beamHolderForward.SetActive(false);
-        beamHolderBackward.SetActive(false);
+        lineRenderers = new List<LineRenderer>();
+        foreach (var holder in beamHolders)
+        {
+            lineRenderers.Add(holder.GetComponent<LineRenderer>());
+            holder.SetActive(false);
+        }
 
         if (isActivated)
         {
@@ -69,11 +70,17 @@ public class DualLightBeam : MonoBehaviour
     {
         if (!isActivated) return; // Prevents reactivation after Deactivate()
 
-        bool hasForwardBeam = UpdateBeam(lineRendererForward, beamHolderForward, transform.position, transform.forward);
-        bool hasBackwardBeam = UpdateBeam(lineRendererBackward, beamHolderBackward, transform.position, -transform.forward);
+        bool hasAnyBeam = false;
+        for (int i = 0; i < beamDirections.Count; i++)
+        {
+            // Transform the local beam direction to world space using the totem's rotation
+            Vector3 worldDirection = transform.TransformDirection(beamDirections[i]);
+            bool hasBeam = UpdateBeam(lineRenderers[i], beamHolders[i], transform.position, worldDirection);
+            if (hasBeam) hasAnyBeam = true;
+        }
 
-        // If neither beam is valid, deactivate the entire totem
-        if (!hasForwardBeam && !hasBackwardBeam)
+        // If no beams are valid, deactivate the entire totem
+        if (!hasAnyBeam)
         {
             Deactivate();
         }
@@ -158,11 +165,12 @@ public class DualLightBeam : MonoBehaviour
 
     public void Activate()
     {
-        //Debug.Log("activate  " + Time.frameCount);
         if (isActivated) return;
         isActivated = true;
-        beamHolderForward.SetActive(true);
-        beamHolderBackward.SetActive(true);
+        foreach (var holder in beamHolders)
+        {
+            holder.SetActive(true);
+        }
 
         if (effects != null)
         {
@@ -181,17 +189,18 @@ public class DualLightBeam : MonoBehaviour
 
     public void Deactivate()
     {
-        //Debug.Log("deactivate1  " + Time.frameCount);
         isActivated = false;
-        beamHolderForward.SetActive(false);
-        beamHolderBackward.SetActive(false);
+        foreach (var holder in beamHolders)
+        {
+            holder.SetActive(false);
+        }
 
         if (sphere != null)
         {
             sphere.Activated = false;
         }
 
-        Debug.Log("deactivate2  " + Time.frameCount);
+        Debug.Log("Deactivated");
     }
 
     private IEnumerator PlayEffects()
@@ -202,7 +211,6 @@ public class DualLightBeam : MonoBehaviour
             yield return new WaitForSeconds(2.0f);
             effects.SetActive(false);
         }
-
         else
         {
             Debug.LogWarning("Effects not set. Skipping effect playback.");
