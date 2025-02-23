@@ -1,41 +1,39 @@
 using UnityEngine;
-using UnityEngine.UI; // Required for UI components
+using UnityEngine.UI;
 using System.Collections;
 
 public class PlayerMovementGuy : MonoBehaviour
 {
     [Header("Movement Settings")]
-    public float speed = 5f; // Normal movement speed
-    public float sprintSpeed = 10f; // Sprint speed
-    public float sprintDuration = 3f; // Duration of sprint
-    public float sprintCooldown = 5f; // Cooldown for sprint
-    private bool isSprinting = false; // Is the player currently sprinting?
-    private float sprintCooldownTimer = 0f; // Timer for sprint cooldown
+    public float speed = 5f;
+    public float sprintSpeed = 10f;
+    public float sprintDuration = 3f;
+    public float sprintCooldown = 5f;
+    private bool isSprinting = false;
+    private float sprintCooldownTimer = 0f;
 
     private Animator animator;
     private Rigidbody rb;
     private Vector3 movement;
 
     [Header("Sprint UI Settings")]
-    public Button sprintButton; // Button to trigger sprint
+    public Button sprintButton;
 
     [Header("Shield Settings")]
-    public GameObject shield;           // Shield object
-    public float shieldDuration = 5.0f; // Duration of the shield
-    public float shieldCD = 10.0f;      // Cooldown for the shield
+    public GameObject shield;
+    public float shieldDuration = 5.0f;
+    public float shieldCD = 10.0f;
     private float shieldCooldownTimer = 0f;
 
     [Header("UI Elements")]
-    public Button shieldButton;  // Reference to the shield button
-    public Text buttonText;      // Text on the button to display cooldown
+    public Button shieldButton;
+    public Text buttonText;
 
     void Start()
     {
-        // Get components
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
 
-        // Ensure buttons are initially interactable and text is set
         if (shieldButton != null)
         {
             shieldButton.interactable = true;
@@ -48,62 +46,61 @@ public class PlayerMovementGuy : MonoBehaviour
             SetButtonOpacity(sprintButton, 1f);
         }
 
-        // Add listener to shield button click
         shieldButton.onClick.AddListener(OnShieldButtonPressed);
-        // Add listener to sprint button click
         sprintButton.onClick.AddListener(OnSprintButtonPressed);
     }
 
     void Update()
     {
-        // Reset movement
-        movement = Vector3.zero;
+        float moveX = Input.GetAxis("Horizontal");  // Left joystick X-axis
+        float moveZ = Input.GetAxis("Vertical");    // Left joystick Y-axis
 
-        // Get input for IJKL
-        if (Input.GetKey(KeyCode.I)) // Forward
-            movement += Vector3.forward;
-        if (Input.GetKey(KeyCode.K)) // Backward
-            movement += Vector3.back;
-        if (Input.GetKey(KeyCode.J)) // Left
-            movement += Vector3.left;
-        if (Input.GetKey(KeyCode.L)) // Right
-            movement += Vector3.right;
+        movement = new Vector3(moveX, 0, moveZ);
 
-        if (Input.GetKey(KeyCode.Semicolon)){
-            OnShieldButtonPressed();
+        if (movement.magnitude > 0.1f)
+        {
+            movement = movement.normalized;
+
+            // Rotate the player to face movement direction
+            Quaternion targetRotation = Quaternion.LookRotation(movement);
+            rb.rotation = Quaternion.Slerp(rb.rotation, targetRotation, Time.deltaTime * 10f);
         }
 
-        // Normalize movement to ensure consistent speed
-        movement = movement.normalized;
-
-        // Update animator speed parameter
         animator.SetFloat("Speed", movement.magnitude);
+
+        // Controller support for sprinting (Press A / Cross)
+        if (Input.GetButtonDown("Jump"))  
+        {
+            OnSprintButtonPressed();
+        }
+
+        // Controller support for shield (Press B / Circle)
+        if (Input.GetButtonDown("Fire2"))  
+        {
+            OnShieldButtonPressed();
+        }
     }
 
     void FixedUpdate()
     {
-        // Apply movement
         if (movement.magnitude > 0.1f)
         {
             rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
-
-            // Rotate character to face movement direction
-            Quaternion targetRotation = Quaternion.LookRotation(movement);
-            rb.rotation = Quaternion.Slerp(rb.rotation, targetRotation, Time.fixedDeltaTime * 10f);
         }
     }
 
     private IEnumerator Sprint()
     {
         isSprinting = true;
-        animator.SetBool("IsSprinting", true); // Start sprint animation
-        sprintCooldownTimer = sprintCooldown + sprintDuration; // Set cooldown timer
-        UpdateSprintButtonUI(); // Update UI immediately
+        animator.SetBool("IsSprinting", true);
+        sprintCooldownTimer = sprintCooldown + sprintDuration;
+
+        UpdateSprintButtonUI();
 
         yield return new WaitForSeconds(sprintDuration);
 
         isSprinting = false;
-        animator.SetBool("IsSprinting", false); // Stop sprint animation
+        animator.SetBool("IsSprinting", false);
     }
 
     private void OnSprintButtonPressed()
@@ -147,9 +144,9 @@ public class PlayerMovementGuy : MonoBehaviour
     private IEnumerator Shield()
     {
         shield.SetActive(true);
-        shieldCooldownTimer = shieldCD;  // Set cooldown timer after activating shield
-        UpdateShieldButtonUI();         // Update UI immediately
-        shieldButton.interactable = false; // Disable button during cooldown
+        shieldCooldownTimer = shieldCD;
+        UpdateShieldButtonUI();
+        shieldButton.interactable = false;
         yield return new WaitForSeconds(shieldDuration);
         shield.SetActive(false);
     }

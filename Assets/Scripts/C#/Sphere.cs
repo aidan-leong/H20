@@ -24,11 +24,13 @@ public class Sphere : MonoBehaviour
         if (Activated)
         {
             meshRenderer.material = S2;
+            Debug.Log("s2  " + Time.frameCount);
         }
 
         else if (!Activated)
         {
             meshRenderer.material = S1;
+            Debug.Log("s1  " + Time.frameCount);
         }
     }
 }

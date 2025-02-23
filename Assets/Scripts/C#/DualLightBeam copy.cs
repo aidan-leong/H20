@@ -1,8 +1,9 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System.Collections;
 
-public class DualLightBeam : MonoBehaviour
+public class DualLightBeamCopy : MonoBehaviour
 {
     [Header("Beam Settings")]
     public float maxBeamLength = 123f;
@@ -14,26 +15,21 @@ public class DualLightBeam : MonoBehaviour
     public bool isCorrupted = false;
     public bool isHitByBeam = false;
 
-    [Header("Beam Holders")]
-    public GameObject beamHolderForward;  // Holds the forward beam
-    public GameObject beamHolderBackward; // Holds the backward beam
-
-    private LineRenderer lineRendererForward;
-    private LineRenderer lineRendererBackward;
-
-    [Header("Other References")]
+    private LineRenderer lineRenderer;
+    private GameManager gameManager;
+    public Health health;
+    public FinalTotem finalTotem;
     public GameObject effects;
     public Sphere sphere;
-    private GameManager gameManager;
 
     private void Start()
     {
-        lineRendererForward = beamHolderForward.GetComponent<LineRenderer>();
-        lineRendererBackward = beamHolderBackward.GetComponent<LineRenderer>();
+        lineRenderer = GetComponent<LineRenderer>();
 
-        beamHolderForward.SetActive(false);
-        beamHolderBackward.SetActive(false);
-
+        // Ensure references are assigned
+        if (gameManager == null) gameManager = FindObjectOfType<GameManager>(); // Assign GameManager if not set
+        if (effects == null) Debug.LogWarning("Effects are not assigned in the Inspector.");
+        
         if (isActivated)
         {
             Activate();
@@ -67,42 +63,25 @@ public class DualLightBeam : MonoBehaviour
 
     public void UpdateBeams()
     {
-        if (!isActivated) return; // Prevents reactivation after Deactivate()
+        List<Vector3> beamPoints = new List<Vector3>();
+        
+        // Forward beam
+        beamPoints.AddRange(CalculateBeamPath(transform.position, transform.forward));
 
-        bool hasForwardBeam = UpdateBeam(lineRendererForward, beamHolderForward, transform.position, transform.forward);
-        bool hasBackwardBeam = UpdateBeam(lineRendererBackward, beamHolderBackward, transform.position, -transform.forward);
+        // Backward beam
+        List<Vector3> backwardBeam = CalculateBeamPath(transform.position, -transform.forward);
+        backwardBeam.Reverse(); // Reverse to ensure continuity.
+        beamPoints.AddRange(backwardBeam);
 
-        // If neither beam is valid, deactivate the entire totem
-        if (!hasForwardBeam && !hasBackwardBeam)
-        {
-            Deactivate();
-        }
-    }
-
-    private bool UpdateBeam(LineRenderer lineRenderer, GameObject holder, Vector3 startPoint, Vector3 direction)
-    {
-        List<Vector3> beamPoints = CalculateBeamPath(startPoint, direction);
-
-        if (beamPoints.Count > 1)
-        {
-            if (!holder.activeSelf) Debug.Log(holder.name + " activated");
-            holder.SetActive(true);
-            lineRenderer.positionCount = beamPoints.Count;
-            lineRenderer.SetPositions(beamPoints.ToArray());
-            return true;
-        }
-        else
-        {
-            if (holder.activeSelf) Debug.Log(holder.name + " deactivated");
-            holder.SetActive(false);
-            return false;
-        }
+        // Update LineRenderer
+        lineRenderer.positionCount = beamPoints.Count;
+        lineRenderer.SetPositions(beamPoints.ToArray());
     }
 
     private List<Vector3> CalculateBeamPath(Vector3 startPoint, Vector3 direction)
     {
         List<Vector3> beamPoints = new List<Vector3> { startPoint };
-        int maxReflections = 10;
+        int maxReflections = 3;  // Prevent infinite reflections
         int reflections = 0;
 
         while (reflections < maxReflections)
@@ -123,15 +102,17 @@ public class DualLightBeam : MonoBehaviour
                     HandleTotemHit(dualHitTotem);
                 }
 
+                // **Reflection Logic**
                 if (((1 << hit.collider.gameObject.layer) & mirrorLayer) != 0)
                 {
-                    direction = Vector3.Reflect(direction, hit.normal);
-                    startPoint = hit.point;
+                    ReflectBeam(hit, ref direction, ref startPoint);
                     reflections++;
-                    continue;
+                    continue;  // Continue reflecting the beam
                 }
-
-                break;
+                else
+                {
+                    break;  // Stop the loop if it's not a mirror
+                }
             }
             else
             {
@@ -139,8 +120,16 @@ public class DualLightBeam : MonoBehaviour
                 break;
             }
         }
+
         return beamPoints;
     }
+
+    private void ReflectBeam(RaycastHit hit, ref Vector3 direction, ref Vector3 startPoint)
+    {
+        direction = Vector3.Reflect(direction, hit.normal);
+        startPoint = hit.point + direction * 0.01f; // Move startPoint slightly forward to avoid re-hitting the same surface
+    }
+
 
     private void HandleTotemHit(object hitTotem)
     {
@@ -158,11 +147,8 @@ public class DualLightBeam : MonoBehaviour
 
     public void Activate()
     {
-        //Debug.Log("activate  " + Time.frameCount);
-        if (isActivated) return;
         isActivated = true;
-        beamHolderForward.SetActive(true);
-        beamHolderBackward.SetActive(true);
+        lineRenderer.enabled = true;
 
         if (effects != null)
         {
@@ -175,23 +161,17 @@ public class DualLightBeam : MonoBehaviour
             int level = int.Parse(gameObject.name.Split('_')[1].Replace("Lvl", ""));
             gameManager?.ClearLevel(level);
         }
-
-        UpdateBeams();
     }
 
     public void Deactivate()
     {
-        //Debug.Log("deactivate1  " + Time.frameCount);
         isActivated = false;
-        beamHolderForward.SetActive(false);
-        beamHolderBackward.SetActive(false);
+        lineRenderer.enabled = false;
 
         if (sphere != null)
         {
             sphere.Activated = false;
         }
-
-        Debug.Log("deactivate2  " + Time.frameCount);
     }
 
     private IEnumerator PlayEffects()
@@ -202,7 +182,6 @@ public class DualLightBeam : MonoBehaviour
             yield return new WaitForSeconds(2.0f);
             effects.SetActive(false);
         }
-
         else
         {
             Debug.LogWarning("Effects not set. Skipping effect playback.");

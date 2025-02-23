@@ -31,9 +31,9 @@
 
    bugs and such
 - weird behav with dualtotem's beams when interacting with pushables w/ mirrors; possibly a reflectbeam() error
-(only happens for the +y beam, might not be fixed since shouldnt be able to be encounterable in level)
+(only happens for the +y beam, might not be fixed since shouldnt be able to be encounterable in level) (FIXED)
 
 - totem doesnt get updated with deactivation logic until line renderer touched by player??
-(only when placed in -4x row in test scene?? might not be a problem)
+(only when placed in -4x row in test scene?? might not be a problem) (FIXED)
 
-- sometimes enemies go through objects...
+- sometimes enemies go through objects...?

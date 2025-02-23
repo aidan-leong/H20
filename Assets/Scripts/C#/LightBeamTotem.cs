@@ -155,11 +155,11 @@ public class LightBeamTotem : MonoBehaviour
             StartCoroutine(PlayEffects());
         }
 
-        // if (gameObject.name.StartsWith("LastTotem_"))
-        // {
-        //     int level = int.Parse(gameObject.name.Split('_')[1].Replace("Lvl", ""));
-        //     gameManager?.ClearLevel(level);
-        // }
+        if (gameObject.name.StartsWith("LastTotem_"))
+        {
+            int level = int.Parse(gameObject.name.Split('_')[1].Replace("Lvl", ""));
+            gameManager?.ClearLevel(level);
+        }
     }
 
     public void Deactivate()
