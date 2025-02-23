@@ -41,6 +41,12 @@ public class PlayerMovement : MonoBehaviour
     public Vector3 cameraOffset = new Vector3(0, 5, -10); // Offset for camera position
     public float cameraFollowSpeed = 5f;  // Speed of camera following the player
 
+    [Header("Trigger Area Settings")]
+    public GameObject triggerObject; // GameObject with the trigger collider
+    public GameObject objectToActivate; // GameObject to activate when entering the trigger area
+    public GameObject objectToDeactivateOnF; // GameObject to deactivate when pressing F
+    private bool isInTriggerArea = false; // Is the player inside the trigger area?
+
     void Start()
     {
         // Get components
@@ -64,6 +70,12 @@ public class PlayerMovement : MonoBehaviour
         shieldButton.onClick.AddListener(OnShieldButtonPressed);
         // Add listener to sprint button click
         sprintButton.onClick.AddListener(OnSprintButtonPressed);
+
+        // Ensure the object to activate is initially inactive
+        if (objectToActivate != null)
+        {
+            objectToActivate.SetActive(false);
+        }
     }
 
     void Update()
@@ -92,7 +104,27 @@ public class PlayerMovement : MonoBehaviour
         // Shield activation (keyboard input)
         if (Input.GetKeyDown(KeyCode.F))
         {
-            OnShieldButtonPressed();
+            if (isInTriggerArea)
+            {
+                // Deactivate the specified GameObject and play the animation
+                if (objectToDeactivateOnF != null)
+                {
+                    objectToDeactivateOnF.SetActive(false);
+                }
+
+                if (triggerObject != null)
+                {
+                    Animator triggerAnimator = triggerObject.GetComponent<Animator>();
+                    if (triggerAnimator != null)
+                    {
+                        triggerAnimator.SetTrigger("PlayAnim"); // Trigger the animation
+                    }
+                }
+            }
+            else
+            {
+                OnShieldButtonPressed();
+            }
         }
 
         // Sprint activation
@@ -254,6 +286,30 @@ public class PlayerMovement : MonoBehaviour
         {
             Vector3 targetPosition = transform.position + cameraOffset;
             playerCamera.transform.position = Vector3.Lerp(playerCamera.transform.position, targetPosition, cameraFollowSpeed * Time.deltaTime);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject == triggerObject)
+        {
+            isInTriggerArea = true;
+            if (objectToActivate != null)
+            {
+                objectToActivate.SetActive(true);
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject == triggerObject)
+        {
+            isInTriggerArea = false;
+            if (objectToActivate != null)
+            {
+                objectToActivate.SetActive(false);
+            }
         }
     }
 }

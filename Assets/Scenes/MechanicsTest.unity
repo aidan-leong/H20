@@ -901,6 +901,9 @@ MonoBehaviour:
   panSpeed: 10
   cameraOffset: {x: 0, y: 5, z: -10}
   cameraFollowSpeed: 5
+  triggerObject: {fileID: 0}
+  objectToActivate: {fileID: 0}
+  objectToDeactivateOnF: {fileID: 0}
 --- !u!114 &390992006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1769,6 +1772,11 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 0}
   m_BuildHeightMesh: 0
+--- !u!1 &724701980 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5749147486335366572, guid: e1420cf681f75d14f9cfca6af137f1f4, type: 3}
+  m_PrefabInstance: {fileID: 4561671077254284079}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &730339160
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2784,7 +2792,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1294975471}
   - {fileID: 1607462630}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3145,6 +3152,38 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1264592200}
   m_CullTransparentMesh: 1
+--- !u!1 &1278548797
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1278548798}
+  m_Layer: 0
+  m_Name: GirlCamHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1278548798
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1278548797}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.1999853, y: -0.41100168, z: -3.360006}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1294975471}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1281313735
 GameObject:
   m_ObjectHideFlags: 0
@@ -3291,7 +3330,6 @@ GameObject:
   - component: {fileID: 1294975474}
   - component: {fileID: 1294975473}
   - component: {fileID: 1294975472}
-  - component: {fileID: 1294975476}
   m_Layer: 0
   m_Name: GirlCam
   m_TagString: MainCamera
@@ -3307,13 +3345,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1294975470}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.61, y: -3.37, z: 3.03}
+  m_LocalRotation: {x: 0.35334787, y: -0, z: -0, w: 0.93549204}
+  m_LocalPosition: {x: 0, y: 4.56, z: -3.41}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1065018208}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Father: {fileID: 1278548798}
+  m_LocalEulerAnglesHint: {x: 41.384, y: 0, z: 0}
 --- !u!114 &1294975472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3450,25 +3488,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!114 &1294975476
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1294975470}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0df004a38a15f24fbfe95e9ebd6c92b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  camPivot: {x: 0, y: 0, z: 0}
-  camRotation: {x: 45, y: 0, z: 0}
-  camSpeed: 5
-  camDistance: 8
-  camOffset: 0
-  camHeightOffset: 2
-  target: {fileID: 2132003441}
 --- !u!1 &1311780064
 GameObject:
   m_ObjectHideFlags: 0
@@ -5730,13 +5749,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Girl
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 706145309430657325, guid: 9963117b16f023c46ad767be7b6fb038, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6779845090501701281, guid: 9963117b16f023c46ad767be7b6fb038, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2132003448}
+    - targetCorrespondingSourceObject: {fileID: 6779845090501701281, guid: 9963117b16f023c46ad767be7b6fb038, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2132003449}
   m_SourcePrefab: {fileID: 100100000, guid: 9963117b16f023c46ad767be7b6fb038, type: 3}
 --- !u!1 &2089612240
 GameObject:
@@ -5842,6 +5865,39 @@ MonoBehaviour:
   playerRenderer: {fileID: 0}
   damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
   healthBar: {fileID: 888058139}
+--- !u!114 &2132003449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2132003441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b34986dd87aeba42a0000fb955408e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
+  sprintSpeed: 10
+  sprintDuration: 3
+  sprintCooldown: 5
+  sprintButton: {fileID: 0}
+  shield: {fileID: 0}
+  shieldDuration: 5
+  shieldCD: 10
+  shieldButton: {fileID: 0}
+  buttonText: {fileID: 0}
+  playerCamera: {fileID: 1278548797}
+  playerCamera2: {fileID: 1294975475}
+  zoomSpeed: 30
+  minZoom: 5
+  maxZoom: 70
+  panSpeed: 10
+  cameraOffset: {x: 0, y: 0, z: 0}
+  cameraFollowSpeed: 5
+  triggerObject: {fileID: 0}
+  objectToActivate: {fileID: 0}
+  objectToDeactivateOnF: {fileID: 0}
 --- !u!1001 &4561671077254284079
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5850,6 +5906,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1581601561860621993, guid: e1420cf681f75d14f9cfca6af137f1f4, type: 3}
+      propertyPath: targetObjectForGuy
+      value: 
+      objectReference: {fileID: 724701980}
+    - target: {fileID: 1581601561860621993, guid: e1420cf681f75d14f9cfca6af137f1f4, type: 3}
+      propertyPath: targetObjectForGirl
+      value: 
+      objectReference: {fileID: 724701980}
     - target: {fileID: 2058132799385968804, guid: e1420cf681f75d14f9cfca6af137f1f4, type: 3}
       propertyPath: finalTotem
       value: 
@@ -5929,7 +5993,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4743771093323101395, guid: c687b5f96172bf24ea54f1d87fdca652, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2
+      value: 4.03
       objectReference: {fileID: 0}
     - target: {fileID: 4743771093323101395, guid: c687b5f96172bf24ea54f1d87fdca652, type: 3}
       propertyPath: m_LocalPosition.y
@@ -5937,7 +6001,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4743771093323101395, guid: c687b5f96172bf24ea54f1d87fdca652, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2
+      value: 5.35
       objectReference: {fileID: 0}
     - target: {fileID: 4743771093323101395, guid: c687b5f96172bf24ea54f1d87fdca652, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6241,6 +6305,7 @@ SceneRoots:
   - {fileID: 2081847680}
   - {fileID: 730339160}
   - {fileID: 2003008392}
+  - {fileID: 1278548798}
   - {fileID: 1065018208}
   - {fileID: 622538482}
   - {fileID: 1007218709}

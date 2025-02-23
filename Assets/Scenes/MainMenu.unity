@@ -3946,7 +3946,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 527, y: -2}
+  m_AnchoredPosition: {x: 556, y: -2}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1695269133
@@ -3969,13 +3969,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Keyboard controls:\nP1- wasd, e (rotate totem right), q (rotate totem
-    left),\n1 (shield), Z (pan left), X (pan right), Shift + Z (zoom out), \nShift
-    + X (zoom in), f (interact)\np2 - ijkl, u (rotate totem right), o (rotate totem
-    left),\n0 (shield), < (pan left), > (pan right), Shift + < (zoom out), \nShift
-    + > (zoom in), h (interact\n\njoystick controls: \nL joystick (movement), Y (shield),
-    x (rotate totem right), \nb (rotate totem left), R joystick (camera panning),
-    \nA (interact), 3 line button (pause)"
+  m_text: "Keyboard controls (P1):\nwasd, e (rotate totem right), q (rotate totem
+    left), \nf (interact and shield), Right mouse hold and move \n(pan camera), shift
+    (dash)\n\njoystick controls (P2): \nL joystick (movement), Y (shield), x (rotate
+    totem right), \nb (rotate totem left), R joystick (camera panning), \nA (interact),
+    3 line button (pause)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0ed9245cccc3b314c88384f66fd09303, type: 2}
   m_sharedMaterial: {fileID: -1389718855949511077, guid: 0ed9245cccc3b314c88384f66fd09303, type: 2}

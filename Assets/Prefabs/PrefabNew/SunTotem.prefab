@@ -415,7 +415,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 40
-  player: {fileID: 7024804174752401047}
+  targetObjectForGirl: {fileID: 0}
+  targetObjectForGuy: {fileID: 0}
 --- !u!1 &6682237242422197524
 GameObject:
   m_ObjectHideFlags: 0
@@ -679,7 +680,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 30
-  player: {fileID: 0}
+  targetObjectForGirl: {fileID: 0}
+  targetObjectForGuy: {fileID: 0}
 --- !u!114 &4762452141297514481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -702,8 +704,8 @@ MonoBehaviour:
   isActivated: 0
   isCorrupted: 0
   isHitByBeam: 0
-  health: {fileID: 0}
-  finalTotem: {fileID: 0}
+  beamHolders: []
+  beamDirections: []
   effects: {fileID: 8414389352726326507}
   sphere: {fileID: 922230308217835111}
 --- !u!1001 &8918256859828222711
@@ -732,15 +734,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 944553649282089588, guid: c02e7bce15f903f4b85b36458355e064, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.00000013411045
+      value: 0.91
       objectReference: {fileID: 0}
     - target: {fileID: 944553649282089588, guid: c02e7bce15f903f4b85b36458355e064, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1
+      value: 1.37
       objectReference: {fileID: 0}
     - target: {fileID: 944553649282089588, guid: c02e7bce15f903f4b85b36458355e064, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.13999945
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 944553649282089588, guid: c02e7bce15f903f4b85b36458355e064, type: 3}
       propertyPath: m_LocalRotation.w
