@@ -29,6 +29,19 @@ public class PlayerMovementGirl : MonoBehaviour
     public Button shieldButton;  // Reference to the shield button
     public Text buttonText;      // Text on the button to display cooldown
 
+    [Header("Camera Settings")]
+    public GameObject playerCamera;          // Reference to the camera
+    public Camera playerCamera2;  
+    public float zoomSpeed = 2f;         // Speed of zooming
+    public float minZoom = 5f;           // Minimum zoom distance
+    public float maxZoom = 20f;          // Maximum zoom distance
+    public float panSpeed = 10f;         // Speed of panning
+    private Vector3 lastMousePosition;   // Last mouse position for panning
+
+    public Vector3 cameraOffset = new Vector3(0, 5, -10); // Offset for camera position
+    public float cameraFollowSpeed = 5f;  // Speed of camera following the player
+
+
     void Start()
     {
         // Get components
@@ -53,31 +66,56 @@ public class PlayerMovementGirl : MonoBehaviour
         // Add listener to sprint button click
         sprintButton.onClick.AddListener(OnSprintButtonPressed);
     }
-
     void Update()
     {
-        // Reset movement
+        if (gameObject.name != "Girl") return; // Ensures only Player 1 script moves Player 1
+
         movement = Vector3.zero;
+        
+        float moveX = 0f;
+        float moveZ = 0f;
 
-        // Get input for IJKL
-        if (Input.GetKey(KeyCode.W)) // Forward
-            movement += Vector3.forward;
-        if (Input.GetKey(KeyCode.S)) // Backward
-            movement += Vector3.back;
-        if (Input.GetKey(KeyCode.A)) // Left
-            movement += Vector3.left;
-        if (Input.GetKey(KeyCode.D)) // Right
-            movement += Vector3.right;
+        // Keyboard input for IJKL
+        if (Input.GetKey(KeyCode.A)) moveX = -1f; // Left
+        if (Input.GetKey(KeyCode.D)) moveX = 1f;  // Right
+        if (Input.GetKey(KeyCode.W)) moveZ = 1f;  // Up
+        if (Input.GetKey(KeyCode.S)) moveZ = -1f; // Down
 
-        if (Input.GetKey(KeyCode.F)){
-            OnShieldButtonPressed();
-        }
+        // Controller input
+        moveX += Input.GetAxis("Horizontal (P1)");
+        moveZ += Input.GetAxis("Vertical (P1)");
 
-        // Normalize movement to ensure consistent speed
-        movement = movement.normalized;
+        // Get camera's forward and right directions (flattened to ignore vertical movement)
+        Vector3 cameraForward = playerCamera.transform.forward;
+        Vector3 cameraRight = playerCamera.transform.right;
+        cameraForward.y = 0f;
+        cameraRight.y = 0f;
+        cameraForward.Normalize();
+        cameraRight.Normalize();
+
+        // Calculate movement direction based on input and camera orientation
+        movement = (cameraForward * moveZ + cameraRight * moveX).normalized;
 
         // Update animator speed parameter
         animator.SetFloat("Speed", movement.magnitude);
+
+        if (Input.GetKeyDown(KeyCode.Q) || Input.GetButtonDown("Fire2 (P1)")) 
+        {
+            OnShieldButtonPressed();
+        }
+        if (Input.GetKeyDown(KeyCode.E) || Input.GetButtonDown("Jump (P1)")) 
+        {
+            OnSprintButtonPressed();
+        }
+
+        // Handle camera zooming
+        HandleCameraZoom();
+
+        // Handle camera panning
+        HandleCameraPanning();
+
+        // Update camera position to follow the player
+        HandleCameraFollow();
     }
 
     void FixedUpdate()
@@ -166,6 +204,47 @@ public class PlayerMovementGirl : MonoBehaviour
         {
             SetButtonOpacity(shieldButton, 1f);
             shieldButton.interactable = true;
+        }
+    }
+
+    private void HandleCameraZoom()
+    {
+        float scrollInput = Input.GetAxis("Mouse ScrollWheel");
+        if (scrollInput != 0f && playerCamera != null)
+        {
+            float newFieldOfView = playerCamera2.fieldOfView - scrollInput * zoomSpeed;
+            playerCamera2.fieldOfView = Mathf.Clamp(newFieldOfView, minZoom, maxZoom);
+        }
+    }
+
+    private void HandleCameraPanning()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            lastMousePosition = Input.mousePosition;
+        }
+
+        if (Input.GetMouseButton(1))
+        {
+            Vector3 deltaMousePosition = Input.mousePosition - lastMousePosition;
+
+            // Convert mouse movement to camera rotation
+            float rotationY = deltaMousePosition.x * panSpeed * Time.deltaTime;
+
+            // Apply rotation around the player
+            playerCamera.transform.RotateAround(transform.position, Vector3.up, rotationY);
+
+            // Update last mouse position
+            lastMousePosition = Input.mousePosition;
+        }
+    }
+
+    private void HandleCameraFollow()
+    {
+        if (playerCamera != null)
+        {
+            Vector3 targetPosition = transform.position + cameraOffset;
+            playerCamera.transform.position = Vector3.Lerp(playerCamera.transform.position, targetPosition, cameraFollowSpeed * Time.deltaTime);
         }
     }
 }

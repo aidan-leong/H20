@@ -52,40 +52,46 @@ public class PlayerMovementGuy : MonoBehaviour
 
     void Update()
     {
-        float moveX = Input.GetAxis("Horizontal");  // Left joystick X-axis
-        float moveZ = Input.GetAxis("Vertical");    // Left joystick Y-axis
+        if (gameObject.name != "Guy") return; // Ensures only Player 2 script moves Player 2
 
-        movement = new Vector3(moveX, 0, moveZ);
+        movement = Vector3.zero;
+        
+        float moveX = 0f;
+        float moveZ = 0f;
 
-        if (movement.magnitude > 0.1f)
-        {
-            movement = movement.normalized;
+        // Keyboard input for IJKL
+        if (Input.GetKey(KeyCode.J)) moveX = -1f; // Left
+        if (Input.GetKey(KeyCode.L)) moveX = 1f;  // Right
+        if (Input.GetKey(KeyCode.I)) moveZ = 1f;  // Up
+        if (Input.GetKey(KeyCode.K)) moveZ = -1f; // Down
 
-            // Rotate the player to face movement direction
-            Quaternion targetRotation = Quaternion.LookRotation(movement);
-            rb.rotation = Quaternion.Slerp(rb.rotation, targetRotation, Time.deltaTime * 10f);
-        }
+        // Controller input
+        moveX += Input.GetAxis("Horizontal (P2)");
+        moveZ += Input.GetAxis("Vertical (P2)");
 
+        movement = new Vector3(moveX, 0, moveZ).normalized;
         animator.SetFloat("Speed", movement.magnitude);
 
-        // Controller support for sprinting (Press A / Cross)
-        if (Input.GetButtonDown("Jump"))  
-        {
-            OnSprintButtonPressed();
-        }
-
-        // Controller support for shield (Press B / Circle)
-        if (Input.GetButtonDown("Fire2"))  
+        if (Input.GetKeyDown(KeyCode.U) || Input.GetButtonDown("Fire2 (P2)")) 
         {
             OnShieldButtonPressed();
+        }
+        if (Input.GetKeyDown(KeyCode.O) || Input.GetButtonDown("Jump (P2)")) 
+        {
+            OnSprintButtonPressed();
         }
     }
 
     void FixedUpdate()
     {
+        // Apply movement
         if (movement.magnitude > 0.1f)
         {
             rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
+
+            // Rotate character to face movement direction
+            Quaternion targetRotation = Quaternion.LookRotation(movement);
+            rb.rotation = Quaternion.Slerp(rb.rotation, targetRotation, Time.fixedDeltaTime * 10f);
         }
     }
 
