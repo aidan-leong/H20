@@ -305,7 +305,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &205662773
 RectTransform:
   m_ObjectHideFlags: 0
@@ -545,7 +545,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &256134603
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3774,7 +3774,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1681293123
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3956,7 +3956,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 556, y: -2}
+  m_AnchoredPosition: {x: 525, y: -2}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1695269133
@@ -3982,8 +3982,8 @@ MonoBehaviour:
   m_text: "Keyboard controls (P1):\nwasd, e (rotate totem right), q (rotate totem
     left), \nf (interact and shield), Right mouse hold and move \n(pan camera), shift
     (dash)\n\njoystick controls (P2): \nL joystick (movement), Y (shield), Dpad Right
-    (rotate totem right), \nDpad Left (rotate totem left), R joysitck (camera panning),
-    \nA (interact), 3 line button (pause)"
+    \n(rotate totem right), x (Shield)\nDpad Left (rotate totem left), R joysitck
+    (camera panning), \nA (interact), 3 line button (pause), Triangle/squaref (dash)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0ed9245cccc3b314c88384f66fd09303, type: 2}
   m_sharedMaterial: {fileID: -1389718855949511077, guid: 0ed9245cccc3b314c88384f66fd09303, type: 2}
@@ -4212,7 +4212,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1824672309
 RectTransform:
   m_ObjectHideFlags: 0

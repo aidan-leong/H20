@@ -6,27 +6,34 @@ public class PressurePlateForMove : MonoBehaviour
     public float moveDistance = 1f;
     public float moveSpeed = 2f;
     private Vector3 movableBarrierOriginalPosition;
-    public bool isPlayerOnPlate = false;
+    private Vector3 loweredPosition;
+    private bool isPlayerOnPlate = false;
 
     void Start()
     {
-        movableBarrierOriginalPosition = movableBarrier.transform.position; //get og position of barrier
+        movableBarrierOriginalPosition = movableBarrier.transform.position; // Get original position of the barrier
+        loweredPosition = movableBarrierOriginalPosition - new Vector3(0, moveDistance, 0); // Calculate lowered position
     }
 
     void Update()
     {
-        if(movableBarrier != null)
+        if (movableBarrier != null)
         {
-            Vector3 targetPosition = isPlayerOnPlate
-                ? movableBarrierOriginalPosition - new Vector3(0, moveDistance, 0) //tenary condition, if true move down
-                : movableBarrierOriginalPosition; //if false move back to og position
+            Vector3 targetPosition = isPlayerOnPlate ? loweredPosition : movableBarrierOriginalPosition;
 
-            //move in the barrier 
-         movableBarrier.transform.position = Vector3.Lerp(movableBarrier.transform.position, targetPosition, Time.deltaTime * moveSpeed);
+            // Smooth movement with a small threshold to stop jitter
+            if (Vector3.Distance(movableBarrier.transform.position, targetPosition) > 0.01f)
+            {
+                movableBarrier.transform.position = Vector3.Lerp(
+                    movableBarrier.transform.position, 
+                    targetPosition, 
+                    Time.deltaTime * moveSpeed
+                );
+            }
         }
     }
 
-    //checks for collider
+    // Detects when player or box steps on the plate
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player 1") || other.CompareTag("Player 2") || other.CompareTag("Box"))
@@ -35,9 +42,10 @@ public class PressurePlateForMove : MonoBehaviour
         }
     }
 
+    // Detects when player or box leaves the plate
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player1") || other.CompareTag("Player 2") || other.CompareTag("Box"))
+        if (other.CompareTag("Player 1") || other.CompareTag("Player 2") || other.CompareTag("Box"))
         {
             isPlayerOnPlate = false;
         }
