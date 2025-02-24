@@ -25,6 +25,14 @@ public class LevelManager : MonoBehaviour
                 PauseGame();
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            if (isPaused)
+            {
+                LoadHome();
+            }
+        }
     }
 
     // Pause the game
@@ -71,5 +79,11 @@ public class LevelManager : MonoBehaviour
     {
         Time.timeScale = 1; // Ensure game is running before changing scenes
         SceneManager.LoadScene(buildIndex);
+    }
+
+    public void LoadHome()
+    {
+        Time.timeScale = 1; // Ensure game is running before changing scenes
+        SceneManager.LoadScene("MainMenu");
     }
 }

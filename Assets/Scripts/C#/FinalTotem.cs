@@ -20,12 +20,6 @@ public class FinalTotem : MonoBehaviour
 
     void Update()
     {
-        activate1 = false;
-        activate2 = false;
-    }
-
-    void LateUpdate()
-    {
         if (activate1 && !activate2)
         {
             meshRenderer.material = S2;
@@ -46,6 +40,36 @@ public class FinalTotem : MonoBehaviour
             Debug.Log("WIN");
             StartCoroutine("WinCutscene"); //if any
         }
+
+        // activate1 = false; Debug.Log("deact1" + Time.frameCount);
+        // activate2 = false; Debug.Log("deact2" + Time.frameCount);
+    }
+
+    void LateUpdate()
+    {
+        // if (activate1 && !activate2)
+        // {
+        //     meshRenderer.material = S2;
+        // }
+
+        // else if (activate1 && activate2)
+        // {
+        //     meshRenderer.material = S3;
+        // }
+
+        // else
+        // {
+        //     meshRenderer.material = S1;
+        // }
+
+        // if (activate1 && activate2)
+        // {
+        //     Debug.Log("WIN");
+        //     StartCoroutine("WinCutscene"); //if any
+        // }
+
+        activate1 = false; Debug.Log("deact1" + Time.frameCount);
+        activate2 = false; Debug.Log("deact2" + Time.frameCount);
     }
 
     private IEnumerator WinCutscene()

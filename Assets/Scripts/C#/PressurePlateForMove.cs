@@ -6,7 +6,7 @@ public class PressurePlateForMove : MonoBehaviour
     public float moveDistance = 1f;
     public float moveSpeed = 2f;
     private Vector3 movableBarrierOriginalPosition;
-    private bool isPlayerOnPlate = false;
+    public bool isPlayerOnPlate = false;
 
     void Start()
     {

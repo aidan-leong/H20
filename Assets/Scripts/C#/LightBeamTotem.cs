@@ -107,8 +107,8 @@ public class LightBeamTotem : MonoBehaviour
                 {
                     switch (finalTotem.activate1)
                     {
-                        case false: finalTotem.activate1 = true; break;
-                        case true: finalTotem.activate2 = true; break;
+                        case false: finalTotem.activate1 = true; Debug.Log("act1" + Time.frameCount); break;
+                        case true: finalTotem.activate2 = true; Debug.Log("act2" + Time.frameCount); break;
                     }
                 }
                 
@@ -157,6 +157,7 @@ public class LightBeamTotem : MonoBehaviour
 
         if (gameObject.name.StartsWith("LastTotem_"))
         {
+            Debug.Log("cleared level");
             int level = int.Parse(gameObject.name.Split('_')[1].Replace("Lvl", ""));
             gameManager?.ClearLevel(level);
         }
